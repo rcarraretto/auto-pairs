@@ -312,6 +312,16 @@ Contributors
 ------------
 * [camthompson](https://github.com/camthompson)
 
+## Developing
+
+### Tests
+
+Make sure `rbenv` is installed and configured, so the system ruby is not being used.
+
+Then `bundle install`.
+
+- `rake test` or
+- Install the [vim-test](https://github.com/janko-m/vim-test) plugin and e.g. call `:TestSuite` on a test file 
 
 License
 -------
