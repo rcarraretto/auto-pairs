@@ -16,10 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-if !exists('g:AutoPairsMoveCharacter')
-  let g:AutoPairsMoveCharacter = "()[]{}\"'"
-end
-
 if !exists('g:AutoPairsShortcutJump')
   let g:AutoPairsShortcutJump = '<M-n>'
 endif
@@ -284,12 +280,6 @@ function! AutoPairsToggle()
   return ''
 endfunction
 
-function! AutoPairsMoveCharacter(key)
-  let c = getline(".")[col(".")-1]
-  let escaped_key = substitute(a:key, "'", "''", 'g')
-  return "\<DEL>\<ESC>:call search("."'".escaped_key."'".")\<CR>a".c."\<LEFT>"
-endfunction
-
 function! AutoPairsReturn()
   if b:autopairs_enabled == 0
     return ''
@@ -332,10 +322,6 @@ function! AutoPairsInit()
     let b:AutoPairs = g:AutoPairs
   end
 
-  if !exists('b:AutoPairsMoveCharacter')
-    let b:AutoPairsMoveCharacter = g:AutoPairsMoveCharacter
-  end
-
   " buffer level map pairs keys
   for [open, close] in items(b:AutoPairs)
     call AutoPairsMap(open)
@@ -343,11 +329,6 @@ function! AutoPairsInit()
       call AutoPairsMap(close)
     end
     let b:AutoPairsClosedPairs[close] = open
-  endfor
-
-  for key in split(b:AutoPairsMoveCharacter, '\s*')
-    let escaped_key = substitute(key, "'", "''", 'g')
-    execute 'inoremap <silent> <buffer> <M-'.key."> <C-R>=AutoPairsMoveCharacter('".escaped_key."')<CR>"
   endfor
 
   " Still use <buffer> level mapping for <BS> <SPACE>

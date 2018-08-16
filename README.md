@@ -119,13 +119,6 @@ Options
 
         Work with FlyMode, insert the key at the Fly Mode jumped postion
 
-*   g:AutoPairsMoveCharacter
-
-        Default: "()[]{}\"'"
-
-        Map <M-(> <M-)> <M-[> <M-]> <M-{> <M-}> <M-"> <M-'> to
-        move character under the cursor to the pair.
-
 Buffer Level Pairs Setting
 --------------------------
 
