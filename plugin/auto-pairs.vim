@@ -16,10 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-if !exists('g:AutoPairsParens')
-  let g:AutoPairsParens = {'(':')', '[':']', '{':'}'}
-end
-
 if !exists('g:AutoPairsShortcutToggle')
   let g:AutoPairsShortcutToggle = '<M-p>'
 end
