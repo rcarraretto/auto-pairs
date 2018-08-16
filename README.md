@@ -135,12 +135,6 @@ Options
 
         Jump to the next closed pair
 
-*   g:AutoPairsMapCh
-
-        Default : 1
-
-        Map <C-h> to delete brackets, quotes in pair
-
 *   g:AutoPairsShortcutBackInsert
 
         Default : <M-b>

@@ -20,11 +20,6 @@ if !exists('g:AutoPairsParens')
   let g:AutoPairsParens = {'(':')', '[':']', '{':'}'}
 end
 
-" Map <C-h> as the same BS
-if !exists('g:AutoPairsMapCh')
-  let g:AutoPairsMapCh = 1
-end
-
 if !exists('g:AutoPairsShortcutToggle')
   let g:AutoPairsShortcutToggle = '<M-p>'
 end
@@ -370,10 +365,6 @@ function! AutoPairsInit()
   " Still use <buffer> level mapping for <BS> <SPACE>
     " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
     execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
-
-  if g:AutoPairsMapCh
-    execute 'inoremap <buffer> <silent> <C-h> <C-R>=AutoPairsDelete()<CR>'
-  endif
 
   if g:AutoPairsShortcutFastWrap != ''
     execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutFastWrap.' <C-R>=AutoPairsFastWrap()<CR>'
