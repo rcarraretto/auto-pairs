@@ -45,12 +45,6 @@ if !exists('g:AutoPairsShortcutJump')
   let g:AutoPairsShortcutJump = '<M-n>'
 endif
 
-" When skipping the closed pair, look at the current and
-" next line as well.
-if !exists('g:AutoPairsMultilineClose')
-  let g:AutoPairsMultilineClose = 1
-endif
-
 " Work with Fly Mode, insert pair where jumped
 if !exists('g:AutoPairsShortcutBackInsert')
   let g:AutoPairsShortcutBackInsert = '<M-b>'
@@ -114,13 +108,7 @@ function! AutoPairsInsert(key)
 
       " Skip the character if closed pair is next character
       if current_char == ''
-        if g:AutoPairsMultilineClose
-          let next_lineno = line('.')+1
-          let next_line = getline(nextnonblank(next_lineno))
-          let next_char = matchstr(next_line, '\s*\zs.')
-        else
-          let next_char = matchstr(line, '\s*\zs.')
-        end
+        let next_char = matchstr(line, '\s*\zs.')
         if next_char == a:key
           return "\<ESC>e^a"
         endif
