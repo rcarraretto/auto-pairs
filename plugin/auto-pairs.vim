@@ -16,10 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-if !exists('g:AutoPairsShortcutJump')
-  let g:AutoPairsShortcutJump = '<M-n>'
-endif
-
 " Work with Fly Mode, insert pair where jumped
 if !exists('g:AutoPairsShortcutBackInsert')
   let g:AutoPairsShortcutBackInsert = '<M-b>'
@@ -195,9 +191,6 @@ function! AutoPairsDelete()
   return "\<BS>"
 endfunction
 
-function! AutoPairsJump()
-  call search('["\]'')}]','W')
-endfunction
 " string_chunk cannot use standalone
 let s:string_chunk = '\v%(\\\_.|[^\1]|[\r\n]){-}'
 let s:ss_pattern = '\v''' . s:string_chunk . ''''
@@ -339,11 +332,6 @@ function! AutoPairsInit()
 
   if g:AutoPairsShortcutBackInsert != ''
     execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutBackInsert.' <C-R>=AutoPairsBackInsert()<CR>'
-  end
-
-  if g:AutoPairsShortcutJump != ''
-    execute 'inoremap <buffer> <silent> ' . g:AutoPairsShortcutJump. ' <ESC>:call AutoPairsJump()<CR>a'
-    execute 'noremap <buffer> <silent> ' . g:AutoPairsShortcutJump. ' :call AutoPairsJump()<CR>'
   end
 
 endfunction

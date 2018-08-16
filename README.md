@@ -92,7 +92,6 @@ Shortcuts
     System Shortcuts:
         <CR>  : Insert new indented line after return if cursor in blank brackets or quotes.
         <BS>  : Delete brackets in pair
-        <M-n> : Jump to next closed pair (g:AutoPairsShortcutJump)
         <M-b> : BackInsert (g:AutoPairsShortcutBackInsert)
 
 Options
@@ -106,12 +105,6 @@ Options
         Default: g:AutoPairs
 
         Buffer level pairs set.
-
-*   g:AutoPairsShortcutJump
-
-        Default: '<M-n>'
-
-        Jump to the next closed pair
 
 *   g:AutoPairsShortcutBackInsert
 

@@ -120,7 +120,6 @@ System Shortcuts:
     <CR> : Insert new indented line after return if cursor in blank brackets
            or quotes.
     <BS> : Delete brackets in pair
-    <M-n>: Jump to next closed pair (|g:AutoPairsShortcutJump|)
     <M-b>: BackInsert (|g:AutoPairsShortcutBackInsert|)
 
 
@@ -155,14 +154,6 @@ You can set |b:AutoPairs| before |BufEnter|: >
 
 This sets |AutoPairs| to only match for parenthesis for 'FILETYPE'.
 
-
-
-                                                      *g:AutoPairsShortcutJump*
-|g:AutoPairsShortcutJump|                                                string
-
-Default: <M-n>
-
-Jump to the next closed pair.
 
 
                                                 *g:AutoPairsShortcutBackInsert*
