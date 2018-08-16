@@ -71,11 +71,7 @@ endif
 " 7.4.849 support <C-G>U to avoid breaking '.'
 " Issue talk: https://github.com/jiangmiao/auto-pairs/issues/3
 " Vim note: https://github.com/vim/vim/releases/tag/v7.4.849
-if v:version > 704 || v:version == 704 && has("patch849")
-  let s:Go = "\<C-G>U"
-else
-  let s:Go = ""
-endif
+let s:Go = "\<C-G>U"
 
 let s:Left = s:Go."\<LEFT>"
 let s:Right = s:Go."\<RIGHT>"
@@ -463,9 +459,6 @@ function! AutoPairsTryInit()
   " Buffer level keys mapping
   " comptible with other plugin
   if g:AutoPairsMapCR
-    if v:version == 703 && has('patch32') || v:version > 703
-      " VIM 7.3 supports advancer maparg which could get <expr> info
-      " then auto-pairs could remap <CR> in any case.
       let info = maparg('<CR>', 'i', 0, 1)
       if empty(info)
         let old_cr = '<CR>'
@@ -477,24 +470,6 @@ function! AutoPairsTryInit()
         let is_expr = info['expr']
         let wrapper_name = '<SID>AutoPairsOldCRWrapper73'
       endif
-    else
-      " VIM version less than 7.3
-      " the mapping's <expr> info is lost, so guess it is expr or not, it's
-      " not accurate.
-      let old_cr = maparg('<CR>', 'i')
-      if old_cr == ''
-        let old_cr = '<CR>'
-        let is_expr = 0
-      else
-        let old_cr = s:ExpandMap(old_cr)
-        " old_cr contain (, I guess the old cr is in expr mode
-        let is_expr = old_cr =~ '\V(' && toupper(old_cr) !~ '\V<C-R>'
-
-        " The old_cr start with " it must be in expr mode
-        let is_expr = is_expr || old_cr =~ '\v^"'
-        let wrapper_name = '<SID>AutoPairsOldCRWrapper'
-      end
-    end
 
     if old_cr !~ 'AutoPairsReturn'
       if is_expr
