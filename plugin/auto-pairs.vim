@@ -16,10 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-if !exists('g:AutoPairsShortcutFastWrap')
-  let g:AutoPairsShortcutFastWrap = '<M-e>'
-end
-
 if !exists('g:AutoPairsMoveCharacter')
   let g:AutoPairsMoveCharacter = "()[]{}\"'"
 end
@@ -358,9 +354,7 @@ function! AutoPairsInit()
     " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
     execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
 
-  if g:AutoPairsShortcutFastWrap != ''
-    execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutFastWrap.' <C-R>=AutoPairsFastWrap()<CR>'
-  end
+  execute 'inoremap <buffer> <silent> <c-e> <C-R>=AutoPairsFastWrap()<CR>'
 
   if g:AutoPairsShortcutBackInsert != ''
     execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutBackInsert.' <C-R>=AutoPairsBackInsert()<CR>'

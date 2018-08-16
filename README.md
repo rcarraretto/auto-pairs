@@ -46,14 +46,14 @@ Features
 
 *   Fast Wrap
 
-        input: |'hello' (press (<M-e> at |)
+        input: |'hello' (press (<c-e> at |)
         output: ('hello')
 
         wrap string, only support c style string
-        input: |'h\\el\'lo' (press (<M-e> at |)
+        input: |'h\\el\'lo' (press (<c-e> at |)
         output ('h\\ello\'')
 
-        input: |[foo, bar()] (press (<M-e> at |)
+        input: |[foo, bar()] (press (<c-e> at |)
         output: ([foo, bar()])
 
 *   Quick move char to closed pair
@@ -92,7 +92,6 @@ Shortcuts
     System Shortcuts:
         <CR>  : Insert new indented line after return if cursor in blank brackets or quotes.
         <BS>  : Delete brackets in pair
-        <M-e> : Fast Wrap (g:AutoPairsShortcutFastWrap)
         <M-n> : Jump to next closed pair (g:AutoPairsShortcutJump)
         <M-b> : BackInsert (g:AutoPairsShortcutBackInsert)
 
@@ -107,14 +106,6 @@ Options
         Default: g:AutoPairs
 
         Buffer level pairs set.
-
-*   g:AutoPairsShortcutFastWrap
-
-        Default: '<M-e>'
-
-        Fast wrap the word. all pairs will be consider as a block (include <>).
-        (|)'hello' after fast wrap at |, the word will be ('hello')
-        (|)<hello> after fast wrap at |, the word will be (<hello>)
 
 *   g:AutoPairsShortcutJump
 
