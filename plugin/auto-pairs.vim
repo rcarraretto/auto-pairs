@@ -33,10 +33,6 @@ if !exists('g:AutoPairsMapCR')
   let g:AutoPairsMapCR = 1
 end
 
-if !exists('g:AutoPairsMapSpace')
-  let g:AutoPairsMapSpace = 1
-end
-
 if !exists('g:AutoPairsCenterLine')
   let g:AutoPairsCenterLine = 1
 end
@@ -393,17 +389,6 @@ function! AutoPairsReturn()
   return ''
 endfunction
 
-function! AutoPairsSpace()
-  let line = getline('.')
-  let prev_char = line[col('.')-2]
-  let cmd = ''
-  let cur_char =line[col('.')-1]
-  if has_key(g:AutoPairsParens, prev_char) && g:AutoPairsParens[prev_char] == cur_char
-    let cmd = "\<SPACE>".s:Left
-  endif
-  return "\<SPACE>".cmd
-endfunction
-
 function! AutoPairsBackInsert()
   if exists('b:autopairs_saved_pair')
     let pair = b:autopairs_saved_pair[0]
@@ -452,15 +437,6 @@ function! AutoPairsInit()
   if g:AutoPairsMapCh
     execute 'inoremap <buffer> <silent> <C-h> <C-R>=AutoPairsDelete()<CR>'
   endif
-
-  if g:AutoPairsMapSpace
-    " Try to respect abbreviations on a <SPACE>
-    let do_abbrev = ""
-    if v:version == 703 && has("patch489") || v:version > 703
-      let do_abbrev = "<C-]>"
-    endif
-    execute 'inoremap <buffer> <silent> <SPACE> '.do_abbrev.'<C-R>=AutoPairsSpace()<CR>'
-  end
 
   if g:AutoPairsShortcutFastWrap != ''
     execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutFastWrap.' <C-R>=AutoPairsFastWrap()<CR>'

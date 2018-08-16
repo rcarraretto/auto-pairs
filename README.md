@@ -29,17 +29,6 @@ Features
             |
         }
 
-*   Insert spaces before closing characters, only for [], (), {}
-
-        input: {|} (press <SPACE> at |)
-        output: { | }
-
-        input: {|} (press <SPACE>foo} at |)
-        output: { foo }|
-
-        input: '|' (press <SPACE> at |)
-        output: ' |'
-
 *   Skip ' when inside a word
 
         input: foo| (press ' at |)
@@ -182,13 +171,6 @@ Options
         Default : 1
 
         When g:AutoPairsMapCR is on, center current line after return if the line is at the bottom 1/3 of the window.
-
-*   g:AutoPairsMapSpace
-
-        Default : 1
-
-        Map <space> to insert a space after the opening character and before the closing one.
-        execute 'inoremap <buffer> <silent> <CR> <C-R>=AutoPairsSpace()<CR>'
 
 *   g:AutoPairsMultilineClose
 
