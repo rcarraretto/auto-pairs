@@ -9,10 +9,9 @@ CONTENTS                                                    *autopairs-contents*
 
     1. Installation ............................. |autopairs-installation|
     2. Features ..................................... |autopairs-features|
-    3. Fly Mode ..................................... |autopairs-fly-mode|
-    4. Shortcuts ................................... |autopairs-shortcuts|
-    5. Options ....................................... |autopairs-options|
-    6. Troubleshooting ......................  |autopairs-troubleshooting|
+    3. Shortcuts ................................... |autopairs-shortcuts|
+    4. Options ....................................... |autopairs-options|
+    5. Troubleshooting ......................  |autopairs-troubleshooting|
 
 ==============================================================================
 1. Introduction                                         *autopairs-installation*
@@ -113,57 +112,6 @@ Delete Repeated Pairs in one time: >
 
         input: [[[[[[|]]]]]] (press <BS> at |)
         output: |
-
-Fly Mode (|autopairs-flymode|): >
-
-        input: if(a[3)
-        output: if(a[3])| (In Fly Mode)
-        output: if(a[3)]) (Without Fly Mode)
-
-        input:
-        {
-            hello();|
-            world();
-        }
-
-        (press } at |)
-
-        output:
-        {
-            hello();
-            world();
-        }|
-
-        (then press <M-b> at | to do backinsert)
-        output:
-        {
-            hello();}|
-            world();
-        }
-
-        See |Fly Mode| section for details
-
-==============================================================================
-3. Fly Mode                                                  *autopairs-flymode*
-
-Fly Mode will always force closed-pair jumping instead of inserting. Only for
-")", "}", "]". If jumps in mistake, you can use |g:AutoPairsBackInsert| (default
-Key: <M-b>) to jump back and insert closed pair.
-
-The most situation maybe you want to insert single closed pair in the string,
-eg: >
-
-    ")"
-
-Fly Mode is DISABLED by default. To enable Fly Mode add following to your
-'.vimrc': >
-
-    let g:AutoPairsFlyMode = 1
-
-Default Options: >
-
-    let g:AutoPairsFlyMode = 0
-    let g:AutoPairsShortcutBackInsert = '<M-b>'
 
 ==============================================================================
 4. Shortcuts                                             *autopairs-shortcuts*
@@ -305,14 +253,6 @@ closing one.
 Executes:
 
     inoremap <buffer> <silent> <CR> <C-R>=AutoPairsSpace()<CR>
-
-
-                                                           *g:AutoPairsFlyMode*
-|g:AutoPairsFlyMode|                                                        int
-
-Default: 0
-
-Set it to 1 to enable |autopairs-flymode|.
 
 
                                                     *g:AutoPairsMultilineClose*

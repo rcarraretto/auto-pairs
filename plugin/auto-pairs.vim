@@ -57,12 +57,6 @@ if !exists('g:AutoPairsShortcutJump')
   let g:AutoPairsShortcutJump = '<M-n>'
 endif
 
-" Fly mode will for closed pair to jump to closed pair instead of insert.
-" also support AutoPairsBackInsert to insert pairs where jumped.
-if !exists('g:AutoPairsFlyMode')
-  let g:AutoPairsFlyMode = 0
-endif
-
 " When skipping the closed pair, look at the current and
 " next line as well.
 if !exists('g:AutoPairsMultilineClose')
@@ -129,7 +123,6 @@ function! AutoPairsInsert(key)
       return s:Right
     end
 
-    if !g:AutoPairsFlyMode
       " Skip the character if next character is space
       if current_char == ' ' && next_char == a:key
         return s:Right.s:Right
@@ -148,19 +141,6 @@ function! AutoPairsInsert(key)
           return "\<ESC>e^a"
         endif
       endif
-    endif
-
-    " Fly Mode, and the key is closed-pairs, search closed-pair and jump
-    if g:AutoPairsFlyMode && has_key(b:AutoPairsClosedPairs, a:key)
-      let n = stridx(after, a:key)
-      if n != -1
-        return repeat(s:Right, n+1)
-      end
-      if search(a:key, 'W')
-        " force break the '.' when jump to different line
-        return "\<Right>"
-      endif
-    endif
 
     " Insert directly if the key is not an open key
     return a:key

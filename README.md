@@ -108,52 +108,6 @@ Features
         input: [[[[[[|]]]]]] (press <BS> at |)
         output: |
 
-*  Fly Mode
-
-        input: if(a[3)
-        output: if(a[3])| (In Fly Mode)
-        output: if(a[3)]) (Without Fly Mode)
-
-        input:
-        {
-            hello();|
-            world();
-        }
-
-        (press } at |)
-
-        output:
-        {
-            hello();
-            world();
-        }|
-
-        (then press <M-b> at | to do backinsert)
-        output:
-        {
-            hello();}|
-            world();
-        }
-
-        See Fly Mode section for details
-
-Fly Mode
---------
-Fly Mode will always force closed-pair jumping instead of inserting. only for ")", "}", "]"
-
-If jumps in mistake, could use AutoPairsBackInsert(Default Key: `<M-b>`) to jump back and insert closed pair.
-
-the most situation maybe want to insert single closed pair in the string, eg ")"
-
-Fly Mode is DISABLED by default.
-
-add **let g:AutoPairsFlyMode = 1** .vimrc to turn it on
-
-Default Options:
-
-    let g:AutoPairsFlyMode = 0
-    let g:AutoPairsShortcutBackInsert = '<M-b>'
-
 Shortcuts
 ---------
 
@@ -236,13 +190,6 @@ Options
         Map <space> to insert a space after the opening character and before the closing one.
         execute 'inoremap <buffer> <silent> <CR> <C-R>=AutoPairsSpace()<CR>'
 
-*   g:AutoPairsFlyMode
-
-        Default : 0
-
-        set it to 1 to enable FlyMode.
-        see FlyMode section for details.
-
 *   g:AutoPairsMultilineClose
 
         Default : 1
@@ -321,7 +268,7 @@ Make sure `rbenv` is installed and configured, so the system ruby is not being u
 Then `bundle install`.
 
 - `rake test` or
-- Install the [vim-test](https://github.com/janko-m/vim-test) plugin and e.g. call `:TestSuite` on a test file 
+- Install the [vim-test](https://github.com/janko-m/vim-test) plugin and e.g. call `:TestSuite` on a test file
 
 License
 -------
