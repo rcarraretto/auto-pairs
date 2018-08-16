@@ -16,10 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-if !exists('g:AutoPairsShortcutToggle')
-  let g:AutoPairsShortcutToggle = '<M-p>'
-end
-
 if !exists('g:AutoPairsShortcutFastWrap')
   let g:AutoPairsShortcutFastWrap = '<M-e>'
 end
@@ -368,12 +364,6 @@ function! AutoPairsInit()
 
   if g:AutoPairsShortcutBackInsert != ''
     execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutBackInsert.' <C-R>=AutoPairsBackInsert()<CR>'
-  end
-
-  if g:AutoPairsShortcutToggle != ''
-    " use <expr> to ensure showing the status when toggle
-    execute 'inoremap <buffer> <silent> <expr> '.g:AutoPairsShortcutToggle.' AutoPairsToggle()'
-    execute 'noremap <buffer> <silent> '.g:AutoPairsShortcutToggle.' :call AutoPairsToggle()<CR>'
   end
 
   if g:AutoPairsShortcutJump != ''

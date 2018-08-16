@@ -120,18 +120,10 @@ System Shortcuts:
     <CR> : Insert new indented line after return if cursor in blank brackets
            or quotes.
     <BS> : Delete brackets in pair
-    <M-p>: Toggle Autopairs (|g:AutoPairsShortcutToggle|)
     <M-e>: Fast Wrap (|g:AutoPairsShortcutFastWrap|)
     <M-n>: Jump to next closed pair (|g:AutoPairsShortcutJump|)
     <M-b>: BackInsert (|g:AutoPairsShortcutBackInsert|)
 
-
-    To rebind keys <M-p>, <M-e> or <M-n> or in case of conflicts conflicts with
-    another keys:
-
-        let g:AutoPairsShortcutToggle = '<another key>'
-
-    If the key is empty string '', then the shortcut will be disabled.
 
 ==============================================================================
 5. Options                                                 *autopairs-options*
@@ -163,15 +155,6 @@ You can set |b:AutoPairs| before |BufEnter|: >
     au Filetype FILETYPE let b:AutoPairs = {"(": ")"}
 
 This sets |AutoPairs| to only match for parenthesis for 'FILETYPE'.
-
-
-
-                                                    *g:AutoPairsShortcutToggle*
-|g:AutoPairsShortcutToggle|                                              string
-
-Default: <M-p>
-
-The shortcut to toggle autopairs.
 
 
 
