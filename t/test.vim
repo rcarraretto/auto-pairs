@@ -1,5 +1,17 @@
+source plugin/auto-pairs.vim
+
 describe 'test'
-  it 'works'
-    Expect 1 + 1 == 2
+
+  before
+    new
+  end
+
+  after
+    close!
+  end
+
+  it 'closes parentheses'
+    normal i(
+    Expect getline(1) == '()'
   end
 end
