@@ -141,12 +141,6 @@ Options
 
         Map <C-h> to delete brackets, quotes in pair
 
-*   g:AutoPairsCenterLine
-
-        Default : 1
-
-        Center current line after return if the line is at the bottom 1/3 of the window.
-
 *   g:AutoPairsShortcutBackInsert
 
         Default : <M-b>

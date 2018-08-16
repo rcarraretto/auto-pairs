@@ -25,10 +25,6 @@ if !exists('g:AutoPairsMapCh')
   let g:AutoPairsMapCh = 1
 end
 
-if !exists('g:AutoPairsCenterLine')
-  let g:AutoPairsCenterLine = 1
-end
-
 if !exists('g:AutoPairsShortcutToggle')
   let g:AutoPairsShortcutToggle = '<M-p>'
 end
@@ -321,11 +317,6 @@ function! AutoPairsReturn()
   let cmd = ''
   let cur_char = line[col('.')-1]
   if has_key(b:AutoPairs, prev_char) && b:AutoPairs[prev_char] == cur_char
-    if g:AutoPairsCenterLine && winline() * 3 >= winheight(0) * 2
-      " Recenter before adding new line to avoid replacing line content
-      let cmd = "zz"
-    end
-
     " If equalprg has been set, then avoid call =
     " https://github.com/jiangmiao/auto-pairs/issues/24
     if &equalprg != ''
