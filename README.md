@@ -86,17 +86,6 @@ Features
         output:
             '''|'''
 
-*   Delete Repeated Pairs in one time
-
-        input: """|""" (press <BS> at |)
-        output: |
-
-        input: {{|}} (press <BS> at |)
-        output: |
-
-        input: [[[[[[|]]]]]] (press <BS> at |)
-        output: |
-
 Shortcuts
 ---------
 

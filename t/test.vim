@@ -14,4 +14,10 @@ describe 'test'
     normal i(
     Expect getline(1) == '()'
   end
+
+  it 'deletes parentheses'
+    execute "normal i(\<bs>"
+    Expect getline(1) == ''
+  end
+
 end

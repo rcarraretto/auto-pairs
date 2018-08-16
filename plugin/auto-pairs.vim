@@ -220,27 +220,6 @@ function! AutoPairsDelete()
     return "\<BS>\<DEL>"
   endif
 
-  " Delete Repeated Pair eg: '''|''' [[|]] {{|}}
-  if has_key(b:AutoPairs, prev_char)
-    let times = 0
-    let p = -1
-    while get(prev_chars, p, '') == prev_char
-      let p = p - 1
-      let times = times + 1
-    endwhile
-
-    let close = b:AutoPairs[prev_char]
-    let left = repeat(prev_char, times)
-    let right = repeat(close, times)
-
-    let before = strpart(line, pos-times, times)
-    let after  = strpart(line, pos, times)
-    if left == before && right == after
-      return repeat("\<BS>\<DEL>", times)
-    end
-  end
-
-
   if has_key(b:AutoPairs, prev_char)
     let close = b:AutoPairs[prev_char]
     if match(line,'^\s*'.close, col('.')-1) != -1
