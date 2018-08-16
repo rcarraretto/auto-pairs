@@ -352,14 +352,7 @@ function! AutoPairsReturn()
       return "\<ESC>".cmd."O"
     endif
 
-    " conflict with javascript and coffee
-    " javascript   need   indent new line
-    " coffeescript forbid indent new line
-    if &filetype == 'coffeescript' || &filetype == 'coffee'
-      return "\<ESC>".cmd."k==o"
-    else
-      return "\<ESC>".cmd."=ko"
-    endif
+    return "\<ESC>".cmd."=ko"
   end
   return ''
 endfunction
