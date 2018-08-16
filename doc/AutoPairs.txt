@@ -120,7 +120,6 @@ System Shortcuts:
     <CR> : Insert new indented line after return if cursor in blank brackets
            or quotes.
     <BS> : Delete brackets in pair
-    <M-b>: BackInsert (|g:AutoPairsShortcutBackInsert|)
 
 
 ==============================================================================
@@ -153,15 +152,6 @@ You can set |b:AutoPairs| before |BufEnter|: >
     au Filetype FILETYPE let b:AutoPairs = {"(": ")"}
 
 This sets |AutoPairs| to only match for parenthesis for 'FILETYPE'.
-
-
-
-                                                *g:AutoPairsShortcutBackInsert*
-|g:AutoPairsShortcutBackInsert|                                          string
-
-Default: <M-b>
-
-Work with |autopairs-flymode|, insert the key at the Fly Mode jumped position.
 
 
 

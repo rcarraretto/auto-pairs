@@ -16,11 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-" Work with Fly Mode, insert pair where jumped
-if !exists('g:AutoPairsShortcutBackInsert')
-  let g:AutoPairsShortcutBackInsert = '<M-b>'
-endif
-
 if !exists('g:AutoPairsSmartQuotes')
   let g:AutoPairsSmartQuotes = 1
 endif
@@ -294,16 +289,6 @@ function! AutoPairsReturn()
   return ''
 endfunction
 
-function! AutoPairsBackInsert()
-  if exists('b:autopairs_saved_pair')
-    let pair = b:autopairs_saved_pair[0]
-    let pos  = b:autopairs_saved_pair[1]
-    call setpos('.', pos)
-    return pair
-  endif
-  return ''
-endfunction
-
 function! AutoPairsInit()
   let b:autopairs_loaded  = 1
   if !exists('b:autopairs_enabled')
@@ -329,10 +314,6 @@ function! AutoPairsInit()
     execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
 
   execute 'inoremap <buffer> <silent> <c-e> <C-R>=AutoPairsFastWrap()<CR>'
-
-  if g:AutoPairsShortcutBackInsert != ''
-    execute 'inoremap <buffer> <silent> '.g:AutoPairsShortcutBackInsert.' <C-R>=AutoPairsBackInsert()<CR>'
-  end
 
 endfunction
 

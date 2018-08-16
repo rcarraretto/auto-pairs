@@ -92,7 +92,6 @@ Shortcuts
     System Shortcuts:
         <CR>  : Insert new indented line after return if cursor in blank brackets or quotes.
         <BS>  : Delete brackets in pair
-        <M-b> : BackInsert (g:AutoPairsShortcutBackInsert)
 
 Options
 -------
@@ -105,12 +104,6 @@ Options
         Default: g:AutoPairs
 
         Buffer level pairs set.
-
-*   g:AutoPairsShortcutBackInsert
-
-        Default : <M-b>
-
-        Work with FlyMode, insert the key at the Fly Mode jumped postion
 
 Buffer Level Pairs Setting
 --------------------------
