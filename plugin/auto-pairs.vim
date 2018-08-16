@@ -20,17 +20,9 @@ if !exists('g:AutoPairsParens')
   let g:AutoPairsParens = {'(':')', '[':']', '{':'}'}
 end
 
-if !exists('g:AutoPairsMapBS')
-  let g:AutoPairsMapBS = 1
-end
-
 " Map <C-h> as the same BS
 if !exists('g:AutoPairsMapCh')
   let g:AutoPairsMapCh = 1
-end
-
-if !exists('g:AutoPairsMapCR')
-  let g:AutoPairsMapCR = 1
 end
 
 if !exists('g:AutoPairsCenterLine')
@@ -397,10 +389,8 @@ function! AutoPairsInit()
   endfor
 
   " Still use <buffer> level mapping for <BS> <SPACE>
-  if g:AutoPairsMapBS
     " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
     execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
-  end
 
   if g:AutoPairsMapCh
     execute 'inoremap <buffer> <silent> <C-h> <C-R>=AutoPairsDelete()<CR>'
@@ -451,7 +441,6 @@ function! AutoPairsTryInit()
 
   " Buffer level keys mapping
   " comptible with other plugin
-  if g:AutoPairsMapCR
       let info = maparg('<CR>', 'i', 0, 1)
       if empty(info)
         let old_cr = '<CR>'
@@ -473,7 +462,6 @@ function! AutoPairsTryInit()
       " Always silent mapping
       execute 'inoremap <script> <buffer> <silent> <CR> '.old_cr.'<SID>AutoPairsReturn'
     end
-  endif
   call AutoPairsInit()
 endfunction
 

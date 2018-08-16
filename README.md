@@ -135,31 +135,17 @@ Options
 
         Jump to the next closed pair
 
-*   g:AutoPairsMapBS
-
-        Default : 1
-
-        Map <BS> to delete brackets, quotes in pair
-        execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
-
 *   g:AutoPairsMapCh
 
         Default : 1
 
         Map <C-h> to delete brackets, quotes in pair
 
-*   g:AutoPairsMapCR
-
-        Default : 1
-
-        Map <CR> to insert a new indented line if cursor in (|), {|} [|], '|', "|"
-        execute 'inoremap <buffer> <silent> <CR> <C-R>=AutoPairsReturn()<CR>'
-
 *   g:AutoPairsCenterLine
 
         Default : 1
 
-        When g:AutoPairsMapCR is on, center current line after return if the line is at the bottom 1/3 of the window.
+        Center current line after return if the line is at the bottom 1/3 of the window.
 
 *   g:AutoPairsMultilineClose
 
