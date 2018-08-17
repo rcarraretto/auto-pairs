@@ -14,13 +14,11 @@ let g:AutoPairsLoaded = 1
 
 let s:PairsDict = {'(': ')', '[': ']', '{': '}', "'": "'", '"': '"', '`': '`'}
 
-" 7.4.849 support <C-G>U to avoid breaking '.'
+" Use <C-G>U to avoid breaking '.'
 " Issue talk: https://github.com/jiangmiao/auto-pairs/issues/3
 " Vim note: https://github.com/vim/vim/releases/tag/v7.4.849
-let s:Go = "\<C-G>U"
-
-let s:Left = s:Go."\<LEFT>"
-let s:Right = s:Go."\<RIGHT>"
+let s:Left = "\<C-G>U\<LEFT>"
+let s:Right = "\<C-G>U\<RIGHT>"
 
 function! AutoPairsInsert(key)
   if !b:autopairs_enabled
@@ -56,18 +54,18 @@ function! AutoPairsInsert(key)
       return s:Right
     end
 
-      " Skip the character if next character is space
-      if current_char == ' ' && next_char == a:key
-        return s:Right.s:Right
-      end
+    " Skip the character if next character is space
+    if current_char == ' ' && next_char == a:key
+      return s:Right.s:Right
+    end
 
-      " Skip the character if closed pair is next character
-      if current_char == ''
-        let next_char = matchstr(line, '\s*\zs.')
-        if next_char == a:key
-          return "\<ESC>e^a"
-        endif
+    " Skip the character if closed pair is next character
+    if current_char == ''
+      let next_char = matchstr(line, '\s*\zs.')
+      if next_char == a:key
+        return "\<ESC>e^a"
       endif
+    endif
 
     " Insert directly if the key is not an open key
     return a:key
@@ -181,16 +179,16 @@ let s:string_chunk = '\v%(\\\_.|[^\1]|[\r\n]){-}'
 let s:ss_pattern = '\v''' . s:string_chunk . ''''
 let s:ds_pattern = '\v"'  . s:string_chunk . '"'
 
-func! s:RegexpQuote(str)
+function! s:RegexpQuote(str)
   return substitute(a:str, '\v[\[\{\(\<\>\)\}\]]', '\\&', 'g')
-endf
+endfunction
 
-func! s:RegexpQuoteInSquare(str)
+function! s:RegexpQuoteInSquare(str)
   return substitute(a:str, '\v[\[\]]', '\\&', 'g')
-endf
+endfunction
 
 " Search next open or close pair
-func! s:FormatChunk(open, close)
+function! s:FormatChunk(open, close)
   let open = s:RegexpQuote(a:open)
   let close = s:RegexpQuote(a:close)
   let open2 = s:RegexpQuoteInSquare(a:open)
@@ -200,7 +198,7 @@ func! s:FormatChunk(open, close)
   else
     return '\v%(' . s:ss_pattern . '|' . s:ds_pattern . '|' . '[^'.open2.close2.']|[\r\n]' . '){-}(['.open2.close2.'])'
   end
-endf
+endfunction
 
 " Fast wrap the word in brackets
 function! AutoPairsFastWrap()
@@ -244,7 +242,6 @@ function! AutoPairsMap(key)
   let escaped_key = substitute(key, "'", "''", 'g')
   " use expr will cause search() doesn't work
   execute 'inoremap <buffer> <silent> '.key." <C-R>=AutoPairsInsert('".escaped_key."')<CR>"
-
 endfunction
 
 function! AutoPairsToggle()
@@ -294,11 +291,9 @@ function! AutoPairsInit()
   endfor
 
   " Still use <buffer> level mapping for <BS> <SPACE>
-    " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
-    execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
-
+  " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
+  execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
   execute 'inoremap <buffer> <silent> <c-e> <C-R>=AutoPairsFastWrap()<CR>'
-
 endfunction
 
 function! s:ExpandMap(map)
@@ -325,33 +320,33 @@ function! AutoPairsTryInit()
 
   " Buffer level keys mapping
   " comptible with other plugin
-      let info = maparg('<CR>', 'i', 0, 1)
-      if empty(info)
-        let old_cr = '<CR>'
-        let is_expr = 0
-      else
-        let old_cr = info['rhs']
-        let old_cr = s:ExpandMap(old_cr)
-        let old_cr = substitute(old_cr, '<SID>', '<SNR>' . info['sid'] . '_', 'g')
-        let is_expr = info['expr']
-        let wrapper_name = '<SID>AutoPairsOldCRWrapper73'
-      endif
+  let info = maparg('<CR>', 'i', 0, 1)
+  if empty(info)
+    let old_cr = '<CR>'
+    let is_expr = 0
+  else
+    let old_cr = info['rhs']
+    let old_cr = s:ExpandMap(old_cr)
+    let old_cr = substitute(old_cr, '<SID>', '<SNR>' . info['sid'] . '_', 'g')
+    let is_expr = info['expr']
+    let wrapper_name = '<SID>AutoPairsOldCRWrapper73'
+  endif
 
-    if old_cr !~ 'AutoPairsReturn'
-      if is_expr
-        " remap <expr> to `name` to avoid mix expr and non-expr mode
-        execute 'inoremap <buffer> <expr> <script> '. wrapper_name . ' ' . old_cr
-        let old_cr = wrapper_name
-      end
-      " Always silent mapping
-      execute 'inoremap <script> <buffer> <silent> <CR> '.old_cr.'<SID>AutoPairsReturn'
+  if old_cr !~ 'AutoPairsReturn'
+    if is_expr
+      " remap <expr> to `name` to avoid mix expr and non-expr mode
+      execute 'inoremap <buffer> <expr> <script> '. wrapper_name . ' ' . old_cr
+      let old_cr = wrapper_name
     end
+    " Always silent mapping
+    execute 'inoremap <script> <buffer> <silent> <CR> '.old_cr.'<SID>AutoPairsReturn'
+  end
+
   call AutoPairsInit()
 endfunction
 
 " Always silent the command
 inoremap <silent> <SID>AutoPairsReturn <C-R>=AutoPairsReturn()<CR>
 imap <script> <Plug>AutoPairsReturn <SID>AutoPairsReturn
-
 
 au BufEnter * :call AutoPairsTryInit()
