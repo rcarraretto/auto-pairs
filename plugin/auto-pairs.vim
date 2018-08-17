@@ -22,11 +22,6 @@ let s:Go = "\<C-G>U"
 let s:Left = s:Go."\<LEFT>"
 let s:Right = s:Go."\<RIGHT>"
 
-
-" Will auto generated {']' => '[', ..., '}' => '{'}in initialize.
-let g:AutoPairsClosedPairs = {}
-
-
 function! AutoPairsInsert(key)
   if !b:autopairs_enabled
     return a:key
@@ -289,7 +284,6 @@ function! AutoPairsInit()
   if !exists('b:autopairs_enabled')
     let b:autopairs_enabled = 1
   end
-  let b:AutoPairsClosedPairs = {}
 
   " buffer level map pairs keys
   for [open, close] in items(s:PairsDict)
@@ -297,7 +291,6 @@ function! AutoPairsInit()
     if open != close
       call AutoPairsMap(close)
     end
-    let b:AutoPairsClosedPairs[close] = open
   endfor
 
   " Still use <buffer> level mapping for <BS> <SPACE>
