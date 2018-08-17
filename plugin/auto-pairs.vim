@@ -16,10 +16,6 @@ if !exists('g:AutoPairs')
   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 end
 
-if !exists('g:AutoPairsSmartQuotes')
-  let g:AutoPairsSmartQuotes = 1
-endif
-
 " 7.4.849 support <C-G>U to avoid breaking '.'
 " Issue talk: https://github.com/jiangmiao/auto-pairs/issues/3
 " Vim note: https://github.com/vim/vim/releases/tag/v7.4.849
@@ -118,9 +114,10 @@ function! AutoPairsInsert(key)
     end
   end
 
+  " Smart quotes
   " Keep quote number is odd.
   " Because quotes should be matched in the same line in most of situation
-  if g:AutoPairsSmartQuotes && open == close
+  if open == close
     " Remove \\ \" \'
     let cleaned_line = substitute(line, '\v(\\.)', '', 'g')
     let n = quotes_num
