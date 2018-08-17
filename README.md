@@ -93,28 +93,6 @@ Shortcuts
         <CR>  : Insert new indented line after return if cursor in blank brackets or quotes.
         <BS>  : Delete brackets in pair
 
-Options
--------
-*   g:AutoPairs
-
-        Default: {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-
-*   b:AutoPairs
-
-        Default: g:AutoPairs
-
-        Buffer level pairs set.
-
-Buffer Level Pairs Setting
---------------------------
-
-Set b:AutoPairs before BufEnter
-
-eg:
-
-    " When the filetype is FILETYPE then make AutoPairs only match for parenthesis
-    au Filetype FILETYPE let b:AutoPairs = {"(": ")"}
-
 TroubleShooting
 ---------------
     The script will remap keys ([{'"}]) <BS>,

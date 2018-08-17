@@ -12,9 +12,7 @@ if exists('g:AutoPairsLoaded') || &cp
 end
 let g:AutoPairsLoaded = 1
 
-if !exists('g:AutoPairs')
-  let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-end
+let s:PairsDict = {'(': ')', '[': ']', '{': '}', "'": "'", '"': '"', '`': '`'}
 
 " 7.4.849 support <C-G>U to avoid breaking '.'
 " Issue talk: https://github.com/jiangmiao/auto-pairs/issues/3
@@ -55,7 +53,7 @@ function! AutoPairsInsert(key)
   end
 
   " The key is difference open-pair, then it means only for ) ] } by default
-  if !has_key(b:AutoPairs, a:key)
+  if !has_key(s:PairsDict, a:key)
     let b:autopairs_saved_pair = [a:key, getpos('.')]
 
     " Skip the character if current character is the same as input
@@ -81,7 +79,7 @@ function! AutoPairsInsert(key)
   end
 
   let open = a:key
-  let close = b:AutoPairs[open]
+  let close = s:PairsDict[open]
 
   if current_char == close && open == close
     return s:Right
@@ -155,12 +153,12 @@ function! AutoPairsDelete()
   end
 
   " Delete last two spaces in parens, work with MapSpace
-  if has_key(b:AutoPairs, pprev_char) && prev_char == ' ' && current_char == ' '
+  if has_key(s:PairsDict, pprev_char) && prev_char == ' ' && current_char == ' '
     return "\<BS>\<DEL>"
   endif
 
-  if has_key(b:AutoPairs, prev_char)
-    let close = b:AutoPairs[prev_char]
+  if has_key(s:PairsDict, prev_char)
+    let close = s:PairsDict[prev_char]
     if match(line,'^\s*'.close, col('.')-1) != -1
       " Delete (|___)
       let space = matchstr(line, '^\s*', col('.')-1)
@@ -224,10 +222,10 @@ function! AutoPairsFastWrap()
     let next_char = line[col('.')-1]
   end
 
-  if has_key(b:AutoPairs, next_char)
+  if has_key(s:PairsDict, next_char)
     let followed_open_pair = next_char
     let inputed_close_pair = current_char
-    let followed_close_pair = b:AutoPairs[next_char]
+    let followed_close_pair = s:PairsDict[next_char]
     if followed_close_pair != followed_open_pair
       " TODO replace system searchpair to skip string and nested pair.
       " eg: (|){"hello}world"} will transform to ({"hello})world"}
@@ -274,7 +272,7 @@ function! AutoPairsReturn()
   let prev_char = pline[strlen(pline)-1]
   let cmd = ''
   let cur_char = line[col('.')-1]
-  if has_key(b:AutoPairs, prev_char) && b:AutoPairs[prev_char] == cur_char
+  if has_key(s:PairsDict, prev_char) && s:PairsDict[prev_char] == cur_char
     " If equalprg has been set, then avoid call =
     " https://github.com/jiangmiao/auto-pairs/issues/24
     if &equalprg != ''
@@ -293,12 +291,8 @@ function! AutoPairsInit()
   end
   let b:AutoPairsClosedPairs = {}
 
-  if !exists('b:AutoPairs')
-    let b:AutoPairs = g:AutoPairs
-  end
-
   " buffer level map pairs keys
-  for [open, close] in items(b:AutoPairs)
+  for [open, close] in items(s:PairsDict)
     call AutoPairsMap(open)
     if open != close
       call AutoPairsMap(close)

@@ -123,39 +123,6 @@ System Shortcuts:
 
 
 ==============================================================================
-5. Options                                                 *autopairs-options*
-
-                                                                 *g:AutoPairs*
-|g:AutoPairs|                                                             dict
-
-Default: >
-    {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
-
-Specifies which symbols should be automatically paired.
-
-To append new pairs without overwriting defaults, add values in your `.vimrc`.:
-
-    let g:AutoPairs['<']='>'
-
-This example will enable matching of `<` with `>`.
-
-
-                                                                  *b:AutoPairs*
-|b:AutoPairs|                                                              dict
-
-Default: |g:AutoPairs|
-
-Buffer level pairs set.
-
-You can set |b:AutoPairs| before |BufEnter|: >
-
-    au Filetype FILETYPE let b:AutoPairs = {"(": ")"}
-
-This sets |AutoPairs| to only match for parenthesis for 'FILETYPE'.
-
-
-
-==============================================================================
 6. Troubleshooting                                 *autopairs-troubleshooting*
 
 This plugin remaps keys `([{'"}]) <BS>`
