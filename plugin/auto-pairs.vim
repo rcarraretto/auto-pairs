@@ -46,12 +46,6 @@ function! AutoPairsInsert(key)
     if current_char == a:key
       return s:Right
     end
-
-    " Skip the character if next character is space
-    if current_char == ' ' && next_char == a:key
-      return s:Right.s:Right
-    end
-
     " Insert directly if the key is not an open key
     return a:key
   end
