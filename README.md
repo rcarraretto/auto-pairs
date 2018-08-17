@@ -44,18 +44,6 @@ Features
         input: "\'
         output: "\'"
 
-*   Fast Wrap
-
-        input: |'hello' (press (<c-e> at |)
-        output: ('hello')
-
-        wrap string, only support c style string
-        input: |'h\\el\'lo' (press (<c-e> at |)
-        output ('h\\ello\'')
-
-        input: |[foo, bar()] (press (<c-e> at |)
-        output: ([foo, bar()])
-
 *   Quick move char to closed pair
 
         input: (|){["foo"]} (press <M-}> at |)

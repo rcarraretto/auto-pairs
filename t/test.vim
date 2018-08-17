@@ -20,10 +20,4 @@ describe 'test'
     Expect getline(1) == ''
   end
 
-  it 'pushes parenthesis forward'
-    put! = 'hello'
-    execute "normal i(\<c-e>"
-    Expect getline(1) == '(hello)'
-  end
-
 end

@@ -174,65 +174,6 @@ function! AutoPairsDelete()
   return "\<BS>"
 endfunction
 
-" string_chunk cannot use standalone
-let s:string_chunk = '\v%(\\\_.|[^\1]|[\r\n]){-}'
-let s:ss_pattern = '\v''' . s:string_chunk . ''''
-let s:ds_pattern = '\v"'  . s:string_chunk . '"'
-
-function! s:RegexpQuote(str)
-  return substitute(a:str, '\v[\[\{\(\<\>\)\}\]]', '\\&', 'g')
-endfunction
-
-function! s:RegexpQuoteInSquare(str)
-  return substitute(a:str, '\v[\[\]]', '\\&', 'g')
-endfunction
-
-" Search next open or close pair
-function! s:FormatChunk(open, close)
-  let open = s:RegexpQuote(a:open)
-  let close = s:RegexpQuote(a:close)
-  let open2 = s:RegexpQuoteInSquare(a:open)
-  let close2 = s:RegexpQuoteInSquare(a:close)
-  if open == close
-    return '\v'.open.s:string_chunk.close
-  else
-    return '\v%(' . s:ss_pattern . '|' . s:ds_pattern . '|' . '[^'.open2.close2.']|[\r\n]' . '){-}(['.open2.close2.'])'
-  end
-endfunction
-
-" Fast wrap the word in brackets
-function! AutoPairsFastWrap()
-  let line = getline('.')
-  let current_char = line[col('.')-1]
-  let next_char = line[col('.')]
-  let open_pair_pattern = '\v[({\[''"]'
-  let at_end = col('.') >= col('$') - 1
-  normal! x
-  " Skip blank
-  if next_char =~ '\v\s' || at_end
-    call search('\v\S', 'W')
-    let line = getline('.')
-    let next_char = line[col('.')-1]
-  end
-
-  if has_key(s:PairsDict, next_char)
-    let followed_open_pair = next_char
-    let inputed_close_pair = current_char
-    let followed_close_pair = s:PairsDict[next_char]
-    if followed_close_pair != followed_open_pair
-      " TODO replace system searchpair to skip string and nested pair.
-      " eg: (|){"hello}world"} will transform to ({"hello})world"}
-      call searchpair('\V'.followed_open_pair, '', '\V'.followed_close_pair, 'W')
-    else
-      call search(s:FormatChunk(followed_open_pair, followed_close_pair), 'We')
-    end
-    return s:Right.inputed_close_pair.s:Left
-  else
-    normal! he
-    return s:Right.current_char.s:Left
-  end
-endfunction
-
 function! AutoPairsMap(key)
   " | is special key which separate map command from text
   let key = a:key
@@ -293,7 +234,6 @@ function! AutoPairsInit()
   " Still use <buffer> level mapping for <BS> <SPACE>
   " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
   execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
-  execute 'inoremap <buffer> <silent> <c-e> <C-R>=AutoPairsFastWrap()<CR>'
 endfunction
 
 function! s:ExpandMap(map)
