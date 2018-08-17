@@ -52,14 +52,6 @@ function! AutoPairsInsert(key)
       return s:Right.s:Right
     end
 
-    " Skip the character if closed pair is next character
-    if current_char == ''
-      let next_char = matchstr(line, '\s*\zs.')
-      if next_char == a:key
-        return "\<ESC>e^a"
-      endif
-    endif
-
     " Insert directly if the key is not an open key
     return a:key
   end
