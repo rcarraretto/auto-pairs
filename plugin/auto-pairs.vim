@@ -167,22 +167,6 @@ function! AutoPairsDelete()
   return "\<BS>"
 endfunction
 
-function! AutoPairsMap(key)
-  let escaped_key = substitute(a:key, "'", "''", 'g')
-  execute 'inoremap <buffer> <silent> '.a:key." <C-R>=AutoPairsInsert('".escaped_key."')<CR>"
-endfunction
-
-function! AutoPairsToggle()
-  if b:autopairs_enabled
-    let b:autopairs_enabled = 0
-    echo 'AutoPairs Disabled.'
-  else
-    let b:autopairs_enabled = 1
-    echo 'AutoPairs Enabled.'
-  end
-  return ''
-endfunction
-
 function! AutoPairsReturn()
   if b:autopairs_enabled == 0
     return ''
@@ -200,6 +184,11 @@ function! AutoPairsReturn()
     return "\<ESC>=ko"
   end
   return ''
+endfunction
+
+function! AutoPairsMap(key)
+  let escaped_key = substitute(a:key, "'", "''", 'g')
+  execute 'inoremap <buffer> <silent> '.a:key." <C-R>=AutoPairsInsert('".escaped_key."')<CR>"
 endfunction
 
 function! AutoPairsInit()
@@ -268,6 +257,17 @@ function! AutoPairsTryInit()
   end
 
   call AutoPairsInit()
+endfunction
+
+function! AutoPairsToggle()
+  if b:autopairs_enabled
+    let b:autopairs_enabled = 0
+    echo 'AutoPairs Disabled.'
+  else
+    let b:autopairs_enabled = 1
+    echo 'AutoPairs Enabled.'
+  end
+  return ''
 endfunction
 
 " Always silent the command
