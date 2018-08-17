@@ -47,8 +47,6 @@ function! AutoPairsInsert(key)
 
   " The key is difference open-pair, then it means only for ) ] } by default
   if !has_key(s:PairsDict, a:key)
-    let b:autopairs_saved_pair = [a:key, getpos('.')]
-
     " Skip the character if current character is the same as input
     if current_char == a:key
       return s:Right
