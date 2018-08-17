@@ -35,11 +35,6 @@ function! AutoPairsInsert(key)
   let prev_chars = split(before, '\zs')
   let prev_char = get(prev_chars, -1, '')
 
-  let eol = 0
-  if col('$') -  col('.') <= 1
-    let eol = 1
-  end
-
   " Ignore auto close if prev character is \
   if prev_char == '\'
     return a:key
