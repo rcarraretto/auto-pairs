@@ -157,12 +157,7 @@ function! AutoPairsReturn()
   let prev_char = pline[strlen(pline)-1]
   let cur_char = line[col('.')-1]
   if has_key(s:PairsDict, prev_char) && s:PairsDict[prev_char] == cur_char
-    " If equalprg has been set, then avoid call =
-    " https://github.com/jiangmiao/auto-pairs/issues/24
-    if &equalprg != ''
-      return "\<ESC>O"
-    endif
-    return "\<ESC>=ko"
+    return "\<ESC>O"
   end
   return ''
 endfunction
