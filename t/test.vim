@@ -3,6 +3,7 @@ source plugin/auto-pairs.vim
 describe 'test'
 
   before
+    set backspace=indent,eol,start
     new
   end
 

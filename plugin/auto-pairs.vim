@@ -124,11 +124,6 @@ function! AutoPairsDelete()
     return "\<BS>"
   end
 
-  " Delete last two spaces in parens, work with MapSpace
-  if has_key(s:PairsDict, pprev_char) && prev_char == ' ' && current_char == ' '
-    return "\<BS>\<DEL>"
-  endif
-
   if has_key(s:PairsDict, prev_char)
     let close = s:PairsDict[prev_char]
     if match(line,'^\s*'.close, col('.')-1) != -1
