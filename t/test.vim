@@ -12,12 +12,25 @@ describe 'test'
     close!
   end
 
-  it 'closes parentheses'
+  it 'auto-closes parentheses'
     normal i(
     Expect getline(1) == '()'
   end
 
-  it 'deletes parentheses'
+  it 'skips closing parenthesis'
+    put! = 'something(arg)'
+    execute 'normal f)'
+    execute "normal i);\<esc>"
+    Expect getline(1) == 'something(arg);'
+  end
+
+  it 'normally closes parenthesis'
+    put! = 'something(arg'
+    execute "normal A);\<esc>"
+    Expect getline(1) == 'something(arg);'
+  end
+
+  it 'auto-deletes parentheses'
     execute "normal i(\<bs>"
     Expect getline(1) == ''
   end
