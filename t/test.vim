@@ -57,6 +57,15 @@ describe 'test'
     Expect getline(1) == "```hello```"
   end
 
+  it 'skips auto-closing single quote, when number of quotes is 3'
+    put! = \"'hello' 'world\"
+    " putting <space> before single quote is important
+    " since there is already a feature that will not auto-close when
+    " single quote is before a word
+    execute "normal A\<space>'\<esc>"
+    Expect getline(1) == "'hello' 'world '"
+  end
+
   it '<cr> inserts extra new line'
     set filetype=javascript
     setlocal noexpandtab shiftwidth=4 tabstop=4
