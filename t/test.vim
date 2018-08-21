@@ -17,7 +17,7 @@ describe 'test'
     Expect getline(1) == '()'
   end
 
-  it 'skips closing parenthesis'
+  it 'skips closing parenthesis, when current char is close parenthesis'
     put! = 'something(arg)'
     execute 'normal f)'
     execute "normal i);\<esc>"
@@ -33,6 +33,28 @@ describe 'test'
   it 'auto-deletes parentheses'
     execute "normal i(\<bs>"
     Expect getline(1) == ''
+  end
+
+  it 'auto-closes single quotes'
+    execute "normal i'hello\<esc>"
+    Expect getline(1) == "'hello'"
+  end
+
+  it 'skips closing single quote, when current char is single quote'
+    put! = \"'hello'\"
+    execute "normal f'i';\<esc>"
+    Expect getline(1) == "'hello';"
+  end
+
+  it 'skips closing single quote, when next to word'
+    put! = 'hello'
+    execute "normal A'\<esc>"
+    Expect getline(1) == "hello'"
+  end
+
+  it 'expands 3 backticks to 6 backticks'
+    execute "normal i```hello\<esc>"
+    Expect getline(1) == "```hello```"
   end
 
   it '<cr> inserts extra new line'
