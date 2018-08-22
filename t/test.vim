@@ -40,6 +40,11 @@ describe 'test'
     Expect getline(1) == "'hello'"
   end
 
+  it 'auto-closes double quotes'
+    execute "normal i\"hello\<esc>"
+    Expect getline(1) == "\"hello\""
+  end
+
   it 'skips closing single quote, when current char is single quote'
     put! = \"'hello'\"
     execute "normal f'i';\<esc>"
@@ -52,9 +57,19 @@ describe 'test'
     Expect getline(1) == "hello'"
   end
 
-  it 'expands 3 backticks to 6 backticks'
+  it 'expands 3 backticks to 6'
     execute "normal i```hello\<esc>"
     Expect getline(1) == "```hello```"
+  end
+
+  it 'expands 3 single quotes to 6'
+    execute "normal i'''hello\<esc>"
+    Expect getline(1) == "'''hello'''"
+  end
+
+  it 'expands 3 double quotes to 6'
+    execute "normal i\"\"\"hello\<esc>"
+    Expect getline(1) == "\"\"\"hello\"\"\""
   end
 
   it 'skips auto-closing single quote, when number of quotes is 3'

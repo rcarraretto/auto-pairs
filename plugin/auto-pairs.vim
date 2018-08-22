@@ -12,7 +12,7 @@ if exists('g:AutoPairsLoaded') || &cp
 end
 let g:AutoPairsLoaded = 1
 
-let s:PairsDict = {'(': ')', '[': ']', '{': '}', "'": "'", '"': '"', '`': '`'}
+let s:PairsDict = {'(': ')', '[': ']', '{': '}'}
 
 " Use <C-G>U to avoid breaking '.'
 " Issue talk: https://github.com/jiangmiao/auto-pairs/issues/3
@@ -20,7 +20,28 @@ let s:PairsDict = {'(': ')', '[': ']', '{': '}', "'": "'", '"': '"', '`': '`'}
 let s:Left = "\<C-G>U\<LEFT>"
 let s:Right = "\<C-G>U\<RIGHT>"
 
-function! AutoPairsInsert(key)
+function! s:InsertOpeningBracket(key)
+  if !b:autopairs_enabled
+    return a:key
+  end
+
+  let line = getline('.')
+  let pos = col('.') - 1
+  let before = strpart(line, 0, pos)
+  let prev_chars = split(before, '\zs')
+  let prev_char = get(prev_chars, -1, '')
+
+  " Ignore auto close if prev character is \
+  if prev_char == '\'
+    return a:key
+  end
+
+  let open = a:key
+  let close = s:PairsDict[open]
+  return open . close . s:Left
+endfunction
+
+function! s:InsertClosingBracket(key)
   if !b:autopairs_enabled
     return a:key
   end
@@ -31,7 +52,6 @@ function! AutoPairsInsert(key)
   let after = strpart(line, pos)
   let next_chars = split(after, '\zs')
   let current_char = get(next_chars, 0, '')
-  let next_char = get(next_chars, 1, '')
   let prev_chars = split(before, '\zs')
   let prev_char = get(prev_chars, -1, '')
 
@@ -40,38 +60,28 @@ function! AutoPairsInsert(key)
     return a:key
   end
 
-  " The key is difference open-pair, then it means only for ) ] } by default
-  if !has_key(s:PairsDict, a:key)
-    " Skip the character if current character is the same as input
-    if current_char == a:key
-      return s:Right
-    end
-    " Insert directly if the key is not an open key
-    return a:key
-  end
-
-  let open = a:key
-  let close = s:PairsDict[open]
-
-  if current_char == close && open == close
+  " Skip the character if current character is the same as input
+  if current_char == a:key
     return s:Right
   end
+  " Insert directly if the key is not an open key
+  return a:key
+endfunction
 
-  " Ignore auto close ' if follows a word
-  " MUST after closed check. 'hello|'
-  if a:key == "'" && prev_char =~ '\v\w'
-    return a:key
-  end
-
+function! s:TripleQuotes(line, col, key)
   " support for ''' ``` and """
-  if open == close
-    " The key must be ' " `
-    let pprev_char = line[col('.')-3]
-    if pprev_char == open && prev_char == open
-      " Double pair found
-      return repeat(a:key, 4) . repeat(s:Left, 3)
-    end
+  " The key must be ' " `
+  let prev_char = a:line[a:col-2]
+  let pprev_char = a:line[a:col-3]
+  if pprev_char == a:key && prev_char == a:key
+    " Double pair found
+    return repeat(a:key, 4) . repeat(s:Left, 3)
   end
+endfunction
+
+function! s:SmartQuotes(line, col, key)
+  let pos = a:col - 1
+  let before = strpart(a:line, 0, pos)
 
   let quotes_num = 0
   " Ignore comment line for vim file
@@ -83,29 +93,128 @@ function! AutoPairsInsert(key)
       let quotes_num = -1
     end
   end
-
   " Smart quotes
   " Keep quote number is odd.
   " Because quotes should be matched in the same line in most of situation
-  if open == close
-    " Remove \\ \" \'
-    let cleaned_line = substitute(line, '\v(\\.)', '', 'g')
-    let n = quotes_num
-    let pos = 0
-    while 1
-      let pos = stridx(cleaned_line, open, pos)
-      if pos == -1
-        break
-      end
-      let n = n + 1
-      let pos = pos + 1
-    endwhile
-    if n % 2 == 1
-      return a:key
-    endif
+  " Remove \\ \" \'
+  let cleaned_line = substitute(a:line, '\v(\\.)', '', 'g')
+  let n = quotes_num
+  let pos = 0
+  while 1
+    let pos = stridx(cleaned_line, a:key, pos)
+    if pos == -1
+      break
+    end
+    let n = n + 1
+    let pos = pos + 1
+  endwhile
+  if n % 2 == 1
+    return a:key
+  endif
+endfunction
+
+function! s:InsertQuote(line, col, key)
+  let tq = s:TripleQuotes(a:line, a:col, a:key)
+  if tq !~ 0
+    return tq
   endif
 
-  return open.close.s:Left
+  let sq = s:SmartQuotes(a:line, a:col, a:key)
+  if sq !~ 0
+    return sq
+  endif
+
+  return a:key.a:key.s:Left
+endfunction
+
+function! s:InsertSingleQuote()
+  let key = "'"
+
+  if !b:autopairs_enabled
+    return key
+  end
+
+  let line = getline('.')
+  let pos = col('.') - 1
+  let before = strpart(line, 0, pos)
+  let after = strpart(line, pos)
+  let next_chars = split(after, '\zs')
+  let current_char = get(next_chars, 0, '')
+  let prev_chars = split(before, '\zs')
+  let prev_char = get(prev_chars, -1, '')
+
+  " Ignore auto close if prev character is \
+  if prev_char == '\'
+    return key
+  end
+
+  if current_char == key
+    return s:Right
+  end
+
+  " Ignore auto close ' if follows a word
+  " MUST after closed check. 'hello|'
+  if key == "'" && prev_char =~ '\v\w'
+    return key
+  end
+
+  return s:InsertQuote(line, col('.'), key)
+endfunction
+
+function! s:InsertDoubleQuote()
+  let key = '"'
+
+  if !b:autopairs_enabled
+    return key
+  end
+
+  let line = getline('.')
+  let pos = col('.') - 1
+  let before = strpart(line, 0, pos)
+  let after = strpart(line, pos)
+  let next_chars = split(after, '\zs')
+  let current_char = get(next_chars, 0, '')
+  let prev_chars = split(before, '\zs')
+  let prev_char = get(prev_chars, -1, '')
+
+  " Ignore auto close if prev character is \
+  if prev_char == '\'
+    return key
+  end
+
+  if current_char == key
+    return s:Right
+  end
+
+  return s:InsertQuote(line, col('.'), key)
+endfunction
+
+function! s:InsertBacktick()
+  let key = '`'
+
+  if !b:autopairs_enabled
+    return key
+  end
+
+  let line = getline('.')
+  let pos = col('.') - 1
+  let before = strpart(line, 0, pos)
+  let after = strpart(line, pos)
+  let next_chars = split(after, '\zs')
+  let current_char = get(next_chars, 0, '')
+  let prev_chars = split(before, '\zs')
+  let prev_char = get(prev_chars, -1, '')
+
+  " Ignore auto close if prev character is \
+  if prev_char == '\'
+    return key
+  end
+
+  if current_char == key
+    return s:Right
+  end
+
+  return s:InsertQuote(line, col('.'), key)
 endfunction
 
 function! AutoPairsDelete()
@@ -115,7 +224,6 @@ function! AutoPairsDelete()
 
   let line = getline('.')
   let pos = col('.') - 1
-  let current_char = get(split(strpart(line, pos), '\zs'), 0, '')
   let prev_chars = split(strpart(line, 0, pos), '\zs')
   let prev_char = get(prev_chars, -1, '')
   let pprev_char = get(prev_chars, -2, '')
@@ -162,9 +270,9 @@ function! AutoPairsReturn()
   return ''
 endfunction
 
-function! AutoPairsMap(key)
+function! s:AutoPairsMap(key, func)
   let escaped_key = substitute(a:key, "'", "''", 'g')
-  execute 'inoremap <buffer> <silent> '.a:key." <C-R>=AutoPairsInsert('".escaped_key."')<CR>"
+  execute 'inoremap <buffer> <silent> '.a:key." <C-R>=<sid>".a:func."('".escaped_key."')<CR>"
 endfunction
 
 function! AutoPairsInit()
@@ -175,15 +283,16 @@ function! AutoPairsInit()
 
   " buffer level map pairs keys
   for [open, close] in items(s:PairsDict)
-    call AutoPairsMap(open)
-    if open != close
-      call AutoPairsMap(close)
-    end
+    call s:AutoPairsMap(open, 'InsertOpeningBracket')
+    call s:AutoPairsMap(close, 'InsertClosingBracket')
   endfor
+  inoremap <buffer> <silent> ' <C-R>=<sid>InsertSingleQuote()<CR>
+  inoremap <buffer> <silent> " <C-R>=<sid>InsertDoubleQuote()<CR>
+  inoremap <buffer> <silent> ` <C-R>=<sid>InsertBacktick()<CR>
 
   " Still use <buffer> level mapping for <BS> <SPACE>
   " Use <C-R> instead of <expr> for issue #14 sometimes press BS output strange words
-  execute 'inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>'
+  inoremap <buffer> <silent> <BS> <C-R>=AutoPairsDelete()<CR>
 endfunction
 
 function! s:ExpandMap(map)

@@ -1,0 +1,11 @@
+policies:
+  ProhibitUnusedVariable:
+    enabled: true
+  ProhibitUsingUndeclaredVariable:
+    enabled: true
+  ProhibitAutocmdWithNoGroup:
+    enabled: false
+  ProhibitEqualTildeOperator:
+    enabled: false
+  ProhibitUnnecessaryDoubleQuote:
+    enabled: false
