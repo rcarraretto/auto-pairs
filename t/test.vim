@@ -17,6 +17,24 @@ describe 'test'
     Expect getline(1) == '()'
   end
 
+  it 'skips auto-close parenthesis, when there is a char in front of it'
+    put! = 'something'
+    normal I(
+    Expect getline(1) == '(something'
+  end
+
+  it 'skips auto-close square brackets, when there is a char in front of it'
+    put! = 'something'
+    normal I[
+    Expect getline(1) == '[something'
+  end
+
+  it 'skips auto-close curly brackets, when there is a char in front of it'
+    put! = 'something'
+    normal I{
+    Expect getline(1) == '{something'
+  end
+
   it 'skips closing parenthesis, when current char is close parenthesis'
     put! = 'something(arg)'
     execute 'normal f)'

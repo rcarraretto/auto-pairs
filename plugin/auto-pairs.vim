@@ -57,6 +57,10 @@ function! AutoPairsInsert(key)
     return s:Right
   end
 
+  if current_char != ''
+    return a:key
+  end
+
   " Ignore auto close ' if follows a word
   " MUST after closed check. 'hello|'
   if a:key == "'" && prev_char =~ '\v\w'
