@@ -57,7 +57,7 @@ function! AutoPairsInsert(key)
     return s:Right
   end
 
-  if current_char != ''
+  if current_char != '' && current_char !~ '[)}\]; ]'
     return a:key
   end
 

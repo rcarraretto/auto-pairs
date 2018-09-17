@@ -23,6 +23,36 @@ describe 'test'
     Expect getline(1) == '(something'
   end
 
+  it 'does not skip auto-close parenthesis, when there is a whitespace in front of it'
+    put! = 'something = 1'
+    normal f=a(
+    Expect getline(1) == 'something =() 1'
+  end
+
+  it 'does not skip auto-close parenthesis, when there is a ) in front of it'
+    put! = 'something(hello)'
+    normal f)i(
+    Expect getline(1) == 'something(hello())'
+  end
+
+  it 'does not skip auto-close parenthesis, when there is a ] in front of it'
+    put! = 'something[hello]'
+    normal f]i(
+    Expect getline(1) == 'something[hello()]'
+  end
+
+  it 'does not skip auto-close parenthesis, when there is a } in front of it'
+    put! = 'something{hello}'
+    normal f}i(
+    Expect getline(1) == 'something{hello()}'
+  end
+
+  it 'does not skip auto-close parenthesis, when there is a ; in front of it'
+    put! = 'something;'
+    normal f;i(
+    Expect getline(1) == 'something();'
+  end
+
   it 'skips auto-close square brackets, when there is a char in front of it'
     put! = 'something'
     normal I[
